@@ -55,34 +55,35 @@ export const LocationSetter: React.FC<Props> = ({coords, setCoords, setLoading})
   }
 
   return (
-    <div className="space-x-2 space-y-2">
-      <button 
-        className="mt-6 w-full sm:w-auto bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-        onClick={autoSetLocation}
-      >
-        Search Your Location
-      </button>
+    <div className="location-setter">
+      <div className="location-input-holder">
+        <input
+          type="number"
+          value={latData}
+          onChange={(e) => {setLatData(e.target.value);}}
+          placeholder="Latitude"
+          className="lat-input"
+        />
+        <input
+          type="number"
+          value={lngData}
+          onChange={(e) => {setLngData(e.target.value);}}        
+          placeholder="Longitude"
+          className="lat-input" 
+        />
+      </div>
       <button
-        className="mt-6 w-full sm:w-auto bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        className="location-button"
         onClick={manualSetLocation}
       >
         Manual Upload Longtitude & Latitude
       </button>
-      <br/>
-      <input
-        type="number"
-        value={latData}
-        onChange={(e) => {setLatData(e.target.value);}}
-        placeholder="Latitude"
-        className="border px-2 py-1 rounded mr-2 spin-none"
-      />
-      <input
-        type="number"
-        value={lngData}
-        onChange={(e) => {setLngData(e.target.value);}}        
-        placeholder="Longitude"
-        className="border px-2 py-1 rounded mr-2" 
-      />
+      <button 
+        className="location-button"
+        onClick={autoSetLocation}
+      >
+        Search Your Location
+      </button>
     </div>
   );
 };

@@ -17,14 +17,16 @@ export default function Home() {
   return (
     <div className="root-bg">
       <div className="left-panel">
-        <h1 className="title">
-          Lunch Solution
-        </h1>
-        <h1 className="subtitle">
-          A simple web to solve question: <br/>
-          " Ehh, what we eat later ? "
-        </h1>
-        <LocationSetter coords={coords} setCoords={setCoords} setLoading={setLoading}/>
+        <div className="left-inner-panel">
+          <h1 className="title">
+            Lunch Solution
+          </h1>
+          <h1 className="subtitle">
+            A simple web to solve question: <br/>
+            " Ehh, what we eat later ? "
+          </h1>
+          <LocationSetter coords={coords} setCoords={setCoords} setLoading={setLoading}/>
+        </div>
       </div>
 
       {/* Right side 40% panel */}

@@ -35,6 +35,7 @@ input[type="number"]::-webkit-inner-spin-button {
   height: 60%;
   padding: 16px;
   align-content: center;
+  padding-top: 40px;
   gap: 50px;
 }
 
@@ -79,16 +80,47 @@ input[type="number"]::-webkit-inner-spin-button {
   font-size: 45;
   font-weight: bold;
   text-align: center;
+  line-height: 1.2;
 }
 
 .subtitle {
   font-size: 20;
   font-weight: lighter;
   text-align: center; 
+  margin-bottom: 50px;
+}
+
+.location-input-holder {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+}
+
+.location-input-holder input {
+  flex: 1;
+  border: 1px solid #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.location-button {
+  margin-top: 8px;            /* mt-6 = 1.5rem (24px) */
+  width: 100%;                    /* w-full */
+  background-color: #3b82f6;      /* bg-blue-500 */
+  color: #ffffff;                 /* text-white */
+  padding-top: 0.5rem;            /* py-2 = 0.5rem (8px) */
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;             /* px-4 = 1rem (16px) */
+  padding-right: 1rem;
+  border-radius: 0.25rem;         /* rounded = 0.25rem (4px) */
+  border: none;                   /* optional, Tailwind assumes no border */
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 
-@media (min-width: 768px) {
+@media (min-width: 980px) {
   .root-bg {
     flex-direction: row;
     overflow-x: hidden; 
@@ -113,8 +145,12 @@ input[type="number"]::-webkit-inner-spin-button {
     font-size: 60;
     text-align: left;
   }
+
   .subtitle {
     text-align: left;
-    margin-bottom: 10px;
+  }
+
+  .left-inner-panel {
+    width: 60%;
   }
 }
