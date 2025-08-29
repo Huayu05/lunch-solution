@@ -9,7 +9,7 @@ export const EmbedMap: React.FC<Props> = ({ coords }) => {
 
   return (
     <iframe
-      className="w-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] border-0 rounded-lg"
+      className="map-iframe"
       src={`https://www.google.com/maps?q=${coords.lat},${coords.lng}&hl=en&z=15&output=embed`}
       allowFullScreen
       loading="lazy"
