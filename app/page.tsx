@@ -16,13 +16,13 @@ export default function Home() {
 
   return (
     <div className="root-bg">
-      {/* Left side 60% panel*/}
       <div className="left-panel">
-        {/* Title */}
-        <h1 className="title text-2xl sm:text-3xl font-bold mb-6 text-center">
-          Web Development Learning Project<br />
-          Your Current Location <br />
-          🍜 
+        <h1 className="title">
+          Lunch Solution
+        </h1>
+        <h1 className="subtitle">
+          A simple web to solve question: <br/>
+          " Ehh, what we eat later ? "
         </h1>
         <LocationSetter coords={coords} setCoords={setCoords} setLoading={setLoading}/>
       </div>
