@@ -5,10 +5,35 @@
   to { opacity: 1; }
 }
 
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slideLeft {
+  from { transform: translateX(right); }
+  to { transform: translateX(-170%); }
+}
+
+@keyframes slideRight {
+  from { transform: translateX(-170%); }
+  to { transform: translateX(right); }
+}
+
+@keyframes slideTop {
+  from { transform: translateY(bottom); }
+  to { transform: translateY(-170%); }
+}
+
+@keyframes slideBottom {
+  from { transform: translateY(-170%); }
+  to { transform: translateY(bottom); }
+}
+
 html, body {
   overflow-x: hidden;
   background-color: #090909;
-  color: #ffffff;
+  color: #eeeeee;
   font-family: "Open Sans", sans-serif;
 }
 
@@ -24,27 +49,45 @@ input[type="number"]::-webkit-inner-spin-button {
   width: 100%;
   min-height: 100dvh;
   height: 100vh;
+  overflow-y: hidden;
   overflow-x: hidden;
-  padding: 20px;
+  padding: px;
   gap: 20px;
   background: linear-gradient(to bottom, #090909, #252525);
 }
 
-.left-panel {
+.location-panel {
   width: 100%;
   height: 60%;
-  padding: 16px;
+  padding: 24px;
   align-content: center;
   padding-top: 40px;
   gap: 50px;
+  animation: fadeIn 2s ease-in forwards;
 }
 
-.right-panel {
+
+.map-panel {
   position: relative;
   width: 100%;
   height: 40%;
   padding: 16px;
-  animation: fadeIn 4s ease-in forwards;
+  animation: fadeIn 2s ease-in forwards;
+}
+
+.restaurant-panel {
+  margin: auto;
+  width: 100%;
+  height: 70%;
+  position: absolute;
+  top: 45%;
+}
+
+.restaurant-list {
+  height: 45vh;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 12px,
 }
 
 .map-iframe {
@@ -73,7 +116,8 @@ input[type="number"]::-webkit-inner-spin-button {
   height: 100%;
   border-radius: inherit;
   box-shadow: inset 0 0 20px rgba(0,0,0,1);
-  pointer-events: none; /* keep map interactive */
+  pointer-events: none;
+  z-index: 2;
 }
 
 .title {
@@ -98,25 +142,90 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .location-input-holder input {
   flex: 1;
-  border: 1px solid #ffffff;
+  border: 1px solid #eeeeee;
   padding: 4px 8px;
   border-radius: 4px;
   margin-bottom: 8px;
 }
 
 .location-button {
-  margin-top: 8px;            /* mt-6 = 1.5rem (24px) */
-  width: 100%;                    /* w-full */
-  background-color: #3b82f6;      /* bg-blue-500 */
-  color: #ffffff;                 /* text-white */
-  padding-top: 0.5rem;            /* py-2 = 0.5rem (8px) */
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;             /* px-4 = 1rem (16px) */
-  padding-right: 1rem;
-  border-radius: 0.25rem;         /* rounded = 0.25rem (4px) */
-  border: none;                   /* optional, Tailwind assumes no border */
+  display: inline-block;
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 12px;
+  text-align: center;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  margin-top: 8px;
+}
+
+.manual-button {
+  background: linear-gradient(to right, #3b82f6, #2563eb); /* blue-500 → blue-600 */
+  color: #eeeeee;
+  border: none;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.manual-button:active {
+  transform: scale(0.92);
+}
+
+.auto-button {
+  background: transparent;
+  color: #3b82f6; /* blue-500 */
+  border: 2px solid #3b82f6;
+}
+
+.auto-button:active {
+  transform: scale(0.95);
+}
+
+.align-center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.to-page-two-button, .to-page-one-button {
+  background: #eeeeee;
+  color: #000000;
+  font-weight: bolder;
+  display: inline-block;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  margin-top: 40px;
+  box-shadow: inset 0px 0px 12px rgba(0, 0, 0, 0.5);
+}
+
+.to-page-two-button:active {
+  box-shadow: inset 0px 0px 28px rgba(0, 0, 0, 0.5);
+  transform: scale(0.95);
+}
+
+
+.inactive {  
+  animation: fadeOut 1s ease-in forwards;
+}
+
+.active {  
+  animation: fadeIn 1s ease-in forwards;
+}
+
+.slide-out {
+  animation: slideTop 2s ease-in-out forwards;
+}
+
+.slide-in {
+  animation: slideBottom 1s ease-in-out forwards;
 }
 
 
@@ -124,21 +233,37 @@ input[type="number"]::-webkit-inner-spin-button {
   .root-bg {
     flex-direction: row;
     overflow-x: hidden; 
-    padding: 60;
+    padding: 60px 100px;
   }
 
-  .left-panel {
+  .location-panel {
     width: 60%;
     height: auto;
   }
 
-  .right-panel {
+  .map-panel {
     width: 40%;
     height: auto;
   }
 
   .map-iframe {
     min-height: 300px;
+  }
+
+  .restaurant-panel {
+    margin: auto;
+    width: 55%;
+    height: auto;
+    position: absolute;
+    top: auto;
+    left: 40%;
+  }
+
+  .restaurant-list {
+    height: 88vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 12px,
   }
 
   .title {
@@ -151,6 +276,46 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 
   .left-inner-panel {
-    width: 60%;
+    width: 80%;
+  }
+
+  .manual-button:hover {
+    background: linear-gradient(to right, #2563eb, #1d4ed8); /* darker on hover */
+    transform: scale(1.02);
+  }
+
+  .manual-button:active {
+    transform: scale(0.95);
+  }
+
+  .auto-button:hover {
+    transform: scale(1.02);
+  }
+
+  .auto-button:active {
+    transform: scale(0.95);
+  }
+
+  .align-center {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+  }
+
+  .to-page-two-button:hover {
+    box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.5);
+    transform: scale(1.05);
+  } 
+
+  .to-page-two-button:active {
+    transform: scale(0.95);
+  }
+
+  .slide-out {
+    animation: slideLeft 2s ease-in-out forwards;
+  }
+
+  .slide-in {
+    animation: slideRight 1s ease-in-out forwards;
   }
 }

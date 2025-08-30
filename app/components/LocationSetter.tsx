@@ -4,13 +4,13 @@ import { useState } from "react";
 
 
 interface Props {
-  coords: {lat: number; lng: number} | null;
   setCoords: React.Dispatch<React.SetStateAction<{ lat: number; lng: number } | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setNextPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 
-export const LocationSetter: React.FC<Props> = ({coords, setCoords, setLoading}) => {
+export const LocationSetter: React.FC<Props> = ({ setCoords, setLoading, setNextPage }) => {
   // Variable for input box
   const [latData, setLatData] = useState<string>("");
   const [lngData, setLngData] = useState<string>("");
@@ -36,7 +36,10 @@ export const LocationSetter: React.FC<Props> = ({coords, setCoords, setLoading})
       (err) => {
         // Print error
         console.log(err.message);
-        setCoords({lat: 1.4800, lng: 103.6596});
+        setCoords({ 
+          lat: 1.4800, 
+          lng: 103.6596 
+        });
 
         // Done loading
         setLoading(false);
@@ -73,16 +76,16 @@ export const LocationSetter: React.FC<Props> = ({coords, setCoords, setLoading})
         />
       </div>
       <button
-        className="location-button"
+        className="location-button manual-button"
         onClick={manualSetLocation}
       >
-        Manual Upload Longtitude & Latitude
+        Manual Upload Location
       </button>
       <button 
-        className="location-button"
+        className="location-button auto-button"
         onClick={autoSetLocation}
       >
-        Search Your Location
+        Upload Your Location
       </button>
     </div>
   );
