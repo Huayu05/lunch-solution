@@ -30,6 +30,7 @@ export default function Home() {
       const data2 = await res.json();
       data.results = [...data.results, ...data2.results];
     }
+    console.log(data);
     
     const formatted = data.results.map((r: any) => ({
       lat: r.geometry.location.lat,
@@ -38,7 +39,12 @@ export default function Home() {
     }));
 
     setRestaurants(formatted);
+    setRestaurants([{ lat: 0, lng: 0, name:"test1"}, { lat: 0, lng: 0, name:"test2"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}]);
   }
+
+  // New restaurant input box variable
+  const [restaurantInput, setRestaurantInput] = React.useState<string>("");
+
 
   // Loading variable
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -74,23 +80,36 @@ export default function Home() {
       {/* Map panel : For map related */}
       <div className="map-panel">
         <div className={ `map-wrapper ${ mounted ? (page === "page2" ? "slide-out" : "slide-in") : "" }` }>
-          <EmbedMap coords={ coords } restaurants={ restaurants } />
+          <EmbedMap coords={ coords } restaurants={ restaurants } mounted={ mounted } />
         </div>
       </div>
 
       {/* Restaurant Panem : For restaurants search results */}
-      { page=="page2" && (
-        <div className="restaurant-panel">
-          <button className="to-page-one-button" onClick={ (e) => {
-            setPage1();
-            setRestaurants([]);
-            setRestaurants([{ lat:coords.lat, lng:coords.lng, name: "" }]);
-          }}>
-            Back
-          </button>
+        <div className={ `restaurant-panel ${ page==="page2" ? "active" : "inactive" }` }>
+          <div className="input-button-holder">
+            <input 
+              className="add-restaurant-input" 
+              placeholder="Enter restaurant name to add"
+              value={ restaurantInput }
+              onChange={(e) => {setRestaurantInput(e.target.value);}}
+            >
+            </input>
+            <button className="add-restaurant-button" onClick={ (e) => {
+              setRestaurantInput("");
+              setRestaurants([{ lat: 0, lng:0, name:restaurantInput}, ...restaurants])
+            }}>
+              Add
+            </button>
+            <button className="to-page-one-button" onClick={ (e) => {
+              setPage1();
+              setRestaurants([]);
+              setRestaurants([{ lat:coords.lat, lng:coords.lng, name: "" }]);
+            }}>
+              Back
+            </button>
+          </div>          
           <RestaurantList restaurants={ restaurants }/>
         </div>
-      ) }
 
 
       {/* Loading Animation */}

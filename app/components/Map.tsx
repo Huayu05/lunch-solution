@@ -5,11 +5,12 @@ import { GoogleMap, LoadScript } from "@react-google-maps/api";
 interface Props {
   coords: { lat: number; lng: number } | null;
   restaurants: { lat: number; lng: number; name: string } [] | null;
+  mounted: boolean;
 }
 
 const containerStyle = { width: "100%", height: "100%" };
 
-export const EmbedMap: React.FC<Props> = ({ coords, restaurants }) => {
+export const EmbedMap: React.FC<Props> = ({ coords, restaurants, mounted }) => {
   const mapRef = React.useRef<google.maps.Map | null>(null);
   const markersRef = React.useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
   const [mapLoaded, setMapLoaded] = React.useState(false);
@@ -42,7 +43,7 @@ export const EmbedMap: React.FC<Props> = ({ coords, restaurants }) => {
 
   if (!coords) return <p>Loading map...</p>;
 
-  if (!restaurants || restaurants.length === 0) {
+  if (!mapLoaded) {
     return (
       <iframe
         className="map-iframe"

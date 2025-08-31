@@ -78,7 +78,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .restaurant-panel {
   margin: auto;
   width: 100%;
-  height: 70%;
+  height: auto;
   position: absolute;
   top: 45%;
 }
@@ -86,8 +86,8 @@ input[type="number"]::-webkit-inner-spin-button {
 .restaurant-list {
   height: 45vh;
   overflow-y: auto;
-  border: 1px solid #ccc;
-  padding: 12px,
+  padding: 12px;
+  margin: 0px 8px;
 }
 
 .map-iframe {
@@ -142,8 +142,9 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .location-input-holder input {
   flex: 1;
-  border: 1px solid #eeeeee;
-  padding: 4px 8px;
+  background-color: #333333;
+  box-shadow: inset 0px 0px 12px rgba(0, 0, 0, 0.9);
+  padding: 8px 12px;
   border-radius: 4px;
   margin-bottom: 8px;
 }
@@ -163,24 +164,59 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .manual-button {
-  background: linear-gradient(to right, #3b82f6, #2563eb); /* blue-500 → blue-600 */
-  color: #eeeeee;
-  border: none;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.manual-button:active {
-  transform: scale(0.92);
+  background: #eeeeee;
+  color: #000000;
+  font-weight: bolder;
+  display: inline-block;
+  padding: 8px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  box-shadow: inset 0px 0px 12px rgba(0, 0, 0, 0.5);
 }
 
 .auto-button {
-  background: transparent;
-  color: #3b82f6; /* blue-500 */
-  border: 2px solid #3b82f6;
+  color: #eeeeee;
+  background: none;
+  font-weight: bolder;
+  display: inline-block;
+  padding: 8px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  border: 2px solid #eeeeee;
 }
 
-.auto-button:active {
+.auto-button:active, .manual-button:active {
   transform: scale(0.95);
+}
+
+.input-button-holder {
+  display: flex;
+  flex-direction: row;
+  align-items: flex;
+  padding-bottom: 12px;
+  margin: 0px 8px;
+}
+
+.add-restaurant-input {
+  flex: 1;
+  width: 60%;
+  height: auto;
+  background-color: #333333;
+  box-shadow: inset 0px 0px 12px rgba(0, 0, 0, 0.9);
+  padding: 4px 16px;
+  border-radius: 12px;
+  margin: 8px 8px 8px 0px;
+  font-size:  12;
 }
 
 .align-center {
@@ -189,9 +225,9 @@ input[type="number"]::-webkit-inner-spin-button {
   justify-content: center;
 }
 
-.to-page-two-button, .to-page-one-button {
-  background: #eeeeee;
-  color: #000000;
+.to-page-two-button {
+  background: linear-gradient(to right, #3b82f6, #2563eb);
+  color: #eeeeee;
   font-weight: bolder;
   display: inline-block;
   padding: 12px 20px;
@@ -203,21 +239,43 @@ input[type="number"]::-webkit-inner-spin-button {
   transition: all 0.2s ease;
   touch-action: manipulation;
   margin-top: 40px;
+  box-shadow: inset 0px 0px 12px rgba(0, 0, 0, 0.7);
+}
+
+.to-page-one-button, .add-restaurant-button {
+  flex: 0;
+  background: #eeeeee;
+  align-items: flex-start;
+  width: auto;
+  margin: 8px;
+  color: #000000;
+  font-weight: bolder;
+  display: inline-block;
+  padding: 8px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
   box-shadow: inset 0px 0px 12px rgba(0, 0, 0, 0.5);
 }
 
-.to-page-two-button:active {
+.to-page-two-button:active, .to-page-one-button:active, .add-restaurant-button:active {
   box-shadow: inset 0px 0px 28px rgba(0, 0, 0, 0.5);
   transform: scale(0.95);
 }
 
 
 .inactive {  
-  animation: fadeOut 1s ease-in forwards;
+  animation: fadeOut 0.5s ease-in forwards;
+  pointer-events: none;
 }
 
 .active {  
-  animation: fadeIn 1s ease-in forwards;
+  animation: fadeIn 2s ease-in forwards;
+  pointer-events: all;
 }
 
 .slide-out {
@@ -225,7 +283,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .slide-in {
-  animation: slideBottom 1s ease-in-out forwards;
+  animation: slideBottom 2s ease-in-out forwards;
 }
 
 
@@ -251,19 +309,30 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 
   .restaurant-panel {
+    padding: 40px;
     margin: auto;
     width: 55%;
     height: auto;
     position: absolute;
     top: auto;
     left: 40%;
+    display: flex;
+    flex-direction: column-reverse;
   }
 
   .restaurant-list {
-    height: 88vh;
+    height: 65vh;
     overflow-y: auto;
     border: 1px solid #ccc;
-    padding: 12px,
+    padding: 12px;
+  }
+
+  .input-button-holder {
+    margin: 12px 0px;
+  }
+
+  .add-restaurant-input {
+    font-size:  16;
   }
 
   .title {
@@ -280,7 +349,6 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 
   .manual-button:hover {
-    background: linear-gradient(to right, #2563eb, #1d4ed8); /* darker on hover */
     transform: scale(1.02);
   }
 
@@ -302,17 +370,17 @@ input[type="number"]::-webkit-inner-spin-button {
     justify-content: left;
   }
 
-  .to-page-two-button:hover {
+  .to-page-two-button:hover, .to-page-one-button:hover, .add-restaurant-button:hover {
     box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.5);
     transform: scale(1.05);
   } 
 
-  .to-page-two-button:active {
+  .to-page-two-button:active, .to-page-one-button:active, .add-restaurant-button:active {
     transform: scale(0.95);
   }
 
   .slide-out {
-    animation: slideLeft 2s ease-in-out forwards;
+    animation: slideLeft 1s ease-in-out forwards;
   }
 
   .slide-in {
