@@ -90,6 +90,38 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0px 8px;
 }
 
+.restaurant-list::-webkit-scrollbar {
+  width: 12px;               /* width of vertical scrollbar */
+}
+
+.restaurant-list::-webkit-scrollbar-track {
+  background: #f1f1f1;       /* track color */
+  border-radius: 6px;
+}
+
+.restaurant-list::-webkit-scrollbar-thumb {
+  background: #888;           /* scrollbar thumb */
+  border-radius: 6px;
+  border: 3px solid #f1f1f1; /* adds padding effect */
+}
+
+.restaurant-list::-webkit-scrollbar-thumb:hover {
+  background: #555;           /* hover effect */
+}
+
+
+.restaurant-name {
+  font-size: 16;
+  padding-bottom: 4px;
+  padding: 4px 12px;
+}
+
+.restaurant-name-odd {
+  background: #222222;
+  border-radius: 12px;
+  padding: 4px 12px;
+}
+
 .map-iframe {
   width: 100%;
   height: 100%;
@@ -323,7 +355,6 @@ input[type="number"]::-webkit-inner-spin-button {
   .restaurant-list {
     height: 65vh;
     overflow-y: auto;
-    border: 1px solid #ccc;
     padding: 12px;
   }
 
