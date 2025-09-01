@@ -11,18 +11,23 @@ export default function Home() {
   const setPage2 = () => { setPage("page2"); };
   const setPage3 = () => { setPage("page3"); };
 
+
   // Coordinates variable (Initialize at TBI)
   const [coords, setCoords] = React.useState<{lat: number; lng: number} | null>({
     lat: 1.4800, 
     lng: 103.6596
   });
 
-  // Restaurants list variable
+
+  //// Restaurants list variable 
   const [restaurants, setRestaurants] = React.useState<{ lat: number; lng: number; name: string }[] | null>([]);
+  // Restaurant details fetch function
   async function fetchRestaurants(lat: number, lng: number) {
     let url = `/api/nearby?lat=${lat}&lng=${lng}`;
     let res = await fetch(url);
     let data = await res.json();
+
+    setLoading(true);
 
     if (data.next_page_token) {
       await new Promise(r => setTimeout(r, 2000));
@@ -30,7 +35,6 @@ export default function Home() {
       const data2 = await res.json();
       data.results = [...data.results, ...data2.results];
     }
-    console.log(data);
     
     const formatted = data.results.map((r: any) => ({
       lat: r.geometry.location.lat,
@@ -39,18 +43,21 @@ export default function Home() {
     }));
 
     setRestaurants(formatted);
-    setRestaurants([{ lat: 0, lng: 0, name:"test1"}, { lat: 0, lng: 0, name:"test2"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}, { lat: 0, lng: 0, name:"test3"}]);
+    setLoading(false);
   }
 
+
+  // Map reference
+  const mapRef = React.useRef<google.maps.Map | null>(null);
+  // Highlighted restaurant variable
+  const [highlightedRestaurant, setHighlightedRestaurant] = React.useState<string>("You");
   // New restaurant input box variable
   const [restaurantInput, setRestaurantInput] = React.useState<string>("");
-
-
   // Loading variable
   const [loading, setLoading] = React.useState<boolean>(false);
-
   // Initial rendering checking use
   const [mounted, setMounted] = React.useState(false);
+
 
   return (
     <div className="root-bg">
@@ -79,42 +86,50 @@ export default function Home() {
 
       {/* Map panel : For map related */}
       <div className="map-panel">
-        <div className={ `map-wrapper ${ mounted ? (page === "page2" ? "slide-out" : "slide-in") : "" }` }>
-          <EmbedMap coords={ coords } restaurants={ restaurants } mounted={ mounted } />
+        <div className={ `map-wrapper ${ mounted ? (page !== "page1" ? "slide-out" : "slide-in") : "" } ${page === "page3" ? "hide-map" : "show-map"}` }>
+          <EmbedMap coords={ coords } restaurants={ restaurants } mounted={ mounted } highlightedRestaurant={ highlightedRestaurant } mapRef={mapRef}/>
         </div>
       </div>
 
       {/* Restaurant Panem : For restaurants search results */}
-        <div className={ `restaurant-panel ${ page==="page2" ? "active" : "inactive" }` }>
-          <div className="input-button-holder">
-            <input 
-              className="add-restaurant-input" 
-              placeholder="Enter restaurant name to add"
-              value={ restaurantInput }
-              onChange={(e) => {setRestaurantInput(e.target.value);}}
-            >
-            </input>
-            <button className="add-restaurant-button" onClick={ (e) => {
-              setRestaurantInput("");
-              setRestaurants([{ lat: 0, lng:0, name:restaurantInput}, ...restaurants])
-            }}>
-              Add
-            </button>
-            <button className="to-page-one-button" onClick={ (e) => {
-              setPage1();
-              setRestaurants([]);
-              setRestaurants([{ lat:coords.lat, lng:coords.lng, name: "" }]);
-            }}>
-              Back
-            </button>
-          </div>          
-          <RestaurantList restaurants={ restaurants }/>
+      <div className={ `restaurant-panel ${ page==="page2" ? "active" : "inactive" }` }>
+        <div className="input-button-holder">
+          <input 
+            className="add-restaurant-input" 
+            placeholder="Enter restaurant name to add"
+            value={ restaurantInput }
+            onChange={(e) => {setRestaurantInput(e.target.value);}}
+          >
+          </input>
+          <button className="add-restaurant-button" onClick={ (e) => {
+            setRestaurantInput("");
+            if (restaurantInput.trim() != "") {
+              setRestaurants([{ lat: 0, lng:0, name:"[Manual] "+restaurantInput}, ...restaurants])
+            }
+          }}>
+            Add
+          </button>
+          <button className="to-page-one-button" onClick={ (e) => {
+            setPage1();
+            setRestaurants([]);
+          }}>
+            Back
+          </button>
         </div>
+        <div className="to-page-three-div">
+          <button className="to-page-three-button" onClick={ (e) => {
+            setPage3();
+          }}>
+            Can't Choose?
+          </button>
+        </div>          
+        <RestaurantList restaurants={ restaurants } setRestaurants={setRestaurants} setHighlightedRestaurant={ setHighlightedRestaurant } mapRef={mapRef}/>
+      </div>
 
 
       {/* Loading Animation */}
       { loading && (
-        <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center transition-opacity bg-white ${ loading ? "opacity-50 pointer-events-none" : "opacity-100" }`}>
+        <div className={`overlay  ${ loading ? "loading" : "" }`}>
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
           <p className="mt-4 text-gray-700 font-medium">Loading...</p>
         </div>
