@@ -2,7 +2,7 @@
 
 import React from "react";
 import './global.css'
-import { EmbedMap, LocationSetter, RestaurantList } from "./components";
+import { EmbedMap, LocationSetter, RestaurantList, SpinWheel } from "./components";
 
 export default function Home() {
   // Paging variable
@@ -86,12 +86,12 @@ export default function Home() {
 
       {/* Map panel : For map related */}
       <div className="map-panel">
-        <div className={ `map-wrapper ${ mounted ? (page !== "page1" ? "slide-out" : "slide-in") : "" } ${page === "page3" ? "hide-map" : "show-map"}` }>
+        <div className={ `map-wrapper ${ mounted ? (page === "page2" ? "slide-out" : "slide-in") : "" }` }>
           <EmbedMap coords={ coords } restaurants={ restaurants } mounted={ mounted } highlightedRestaurant={ highlightedRestaurant } mapRef={mapRef}/>
         </div>
       </div>
 
-      {/* Restaurant Panem : For restaurants search results */}
+      {/* Restaurant Panel : For restaurants search results */}
       <div className={ `restaurant-panel ${ page==="page2" ? "active" : "inactive" }` }>
         <div className="input-button-holder">
           <input 
@@ -119,11 +119,18 @@ export default function Home() {
         <div className="to-page-three-div">
           <button className="to-page-three-button" onClick={ (e) => {
             setPage3();
+            setHighlightedRestaurant(null)
           }}>
             Can't Choose?
           </button>
         </div>          
         <RestaurantList restaurants={ restaurants } setRestaurants={setRestaurants} setHighlightedRestaurant={ setHighlightedRestaurant } mapRef={mapRef}/>
+      </div>
+
+      {/* Wheel Panel : For restaurants search results */}
+      <div className={ `wheel-panel ${ page==="page3" ? "active" : "inactive" }` }>
+        <SpinWheel highlightedRestaurant={ highlightedRestaurant} setHighlightedRestaurant={setHighlightedRestaurant} restaurants={restaurants} setRestaurants={setRestaurants} setPage={setPage}></SpinWheel>
+        {/*<iframe className="wheel-iframe" src={`https://www.spinitwheel.com/embed.html?entries=${"Option 1,Option 2,Option 3,Option 4,Option 5"}`} width="60%" height="100%" scrolling="no"></iframe>*/}
       </div>
 
 
